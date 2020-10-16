@@ -1,5 +1,5 @@
 ## 函数
-
+// 函数的所有特点：
 ####  函数的返回值由什么确定
 * **调用时**输入的参数params
 * **定义时**的env
@@ -44,3 +44,17 @@ a = 3;
 
 
 #### this问题讨论
+
+
+#### 函数柯里化问题
+
+#### 高阶函数
+把函数当作参数或者把函数当作返回值的函数。
+JS内置的高阶函数
+* Function.prototype.bind
+* Function.prototype.apply
+* Function.prototype.call
+* Array.prototype.sort
+* Array.prototype.map
+* Array.prototype.filter
+* Array.prototype.reduce
