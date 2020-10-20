@@ -1,0 +1,14 @@
+{
+  "name": "class",
+  "version": "1.0.0",
+  "description": "为什么有类？\r 不同对象的属性重复了，就有了类\r 为什么有继承？\r 不同的类的属性重复了，就有了继承.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^9.0.0"
+  }
+}
