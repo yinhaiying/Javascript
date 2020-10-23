@@ -23,16 +23,16 @@ array[0]('hi')        实际上可以写成 array.[0].call(array,'hi')
 1. this其实是一个参数
 2. 既然是参数，那么this是什么值需要看函数调用时，而不是定义时。
 */
-let length = 10;    
-function fn(){console.log(this.length)};
-let obj = {
-    length:5,
-    method(fn){
-        fn();
-        arguments[0]()
-    }
-}
-obj.method(fn,1);
+// let length = 10;    
+// function fn(){console.log(this.length)};
+// let obj = {
+//     length:5,
+//     method(fn){
+//         fn();
+//         arguments[0]()
+//     }
+// }
+// obj.method(fn,1);
 
 
 // button.onclick = fucntion(e){
@@ -49,3 +49,32 @@ obj.method(fn,1);
 
 
 */
+
+
+// let foo = function(){
+//     console.log(this);
+// }
+// let obj = {
+//     foo:foo
+// }
+
+// obj.foo()     // 打印出的this为obj
+// let bar = obj.foo;
+// bar();        // 打印出的this为window 
+// foo.call(obj) // 打印出的this为obj
+// // 这道题目很简单，
+
+
+window.number = 2;
+var obj = {
+  number: 3,
+  db1: (function () {
+    console.log(this);
+    this.number *= 4;  
+    return function () {
+      console.log(this);
+      this.number *= 5;    
+    };
+  })()
+};
+var db1 = obj.db1;
