@@ -1,6 +1,9 @@
 import * as chai from "chai";
 const assert = chai.assert;
 import * as mocha from "mocha";
+import * as sinon from 'sinon';
+import * as sinonChai from 'sinon-chai';
+chai.use(sinonChai);
 import Promise from "../promise";
 describe('Promise', () => {
     it('是一个类',() => {
@@ -29,20 +32,16 @@ describe('Promise', () => {
     //   })
     });
     it('new Promise(fn)中的fn必须立即执行',() => {
-        let called = false;
-        const promise = new Promise(() => {
-            called = true;
-        });
-        assert.isTrue(called)
+        let fn = sinon.fake();  // sinon提供一个假的函数
+        new Promise(fn);
+        assert(fn.called);   // 这个假函数有一个called参数，根据这个参数可以判断函数是否被调用。
     })
-    it('new Promise(fn)中的fn必须接收resolve和reject两个函数',() => {
-        let called = false;
-        const promise = new Promise((resolve,reject) => {
-            called = true;
+    it('new Promise(fn)中的fn必须接收resolve和reject两个函数',(done) => {
+        new Promise((resolve,reject) => {
             assert.isFunction(resolve);
             assert.isFunction(reject);
+            done();
         });
-        assert.isTrue(called)
     })
 
     it('new Promise(fn)会生成一个对象，对象有then方法',() => {
@@ -51,19 +50,17 @@ describe('Promise', () => {
     })
     // 如果代码中有需要等待的执行，那么需要参数done
     it('promise.then(success)会在resolve被调用之后执行',(done) => {
-      let called  = false;
+      const success = sinon.fake();
       const promise = new Promise((resolve,reject) => {
-          assert(called === false);
+          assert.isFalse(success.called)
           resolve();
           setTimeout(() => {
-            assert(called === true);
+            assert.isTrue(success.called);
             done(); // 加入done表示我执行完了，你可以去检测我的执行结果了。
           },0)
       })
       // 该函数在resolve之后执行;
       //@ts-ignore
-      promise.then(() => {
-          called = true;
-      })
+      promise.then(success)
     })
 });
