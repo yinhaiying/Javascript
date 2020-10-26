@@ -6,6 +6,9 @@ class Promise{
   resolve = (result)=>{
         // then的第一个参数是在resolve执行的情况下执行
         setTimeout(() => {
+            if(this.state !== 'pending'){
+                return;
+            }
             this.state = 'fulfilled';
             if(typeof this.succeed === 'function'){
                 this.succeed(result);
@@ -15,6 +18,9 @@ class Promise{
   reject = (reason)=>{
         // then的第二个参数是在reject执行的情况下执行
         setTimeout(() => {
+            if(this.state !== 'pending'){
+                return;
+            }
             this.state = "rejected";
             if(typeof this.fail === 'function'){
                 this.fail(reason);

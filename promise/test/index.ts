@@ -77,7 +77,7 @@ describe('Promise', () => {
       //@ts-ignore
       promise.then(null,fail)
     });
-    it('2.2.1——then的两个参数必须是函数，如果不是函数必须被忽略',() => {
+    it('2.2.1——then的第一个参数必须是一个函数，如果不是函数必须被忽略',() => {
       const promise = new Promise((resolve) => {
         resolve()  // resolve执行后then中的第一个参数会立即执行
       });
@@ -87,19 +87,39 @@ describe('Promise', () => {
     it('2.2.2——then的第一个参数是一个函数,它必须在fulfilled被调用，然后把promise的值作为它的第一个参数',(done) => {
       const succeed = sinon.fake();
       const promise = new Promise(resolve => {
-        // assert(promise.state === 'pending');
-        console.log(".....",promise)
         assert.isFalse(succeed.called);
         resolve(2);
+        resolve(333);
         setTimeout(() => {
           assert(promise.state === 'fulfilled');
-          assert.isTrue(succeed.called);
+          assert.isTrue(succeed.calledOnce);
           assert(succeed.calledWith(2));   // calledWith被调用时传入的参数
         },0)
         done();
       });
       promise.then(succeed)
-
+    })
+    it('2.2.1.2——then的第二个参数必须是函数，如果不是函数必须被忽略',() => {
+      const promise = new Promise((resolve,reject) => {
+        reject()  
+      });
+      promise.then(false,null);
+      assert(1===1)
+    });
+    it('2.2.3——then的第二个参数是一个函数,它必须在rejected被调用，然后把promise的值作为它的第一个参数reason',(done) => {
+      const failed = sinon.fake();
+      const promise = new Promise((resolve,reject) => {
+        assert.isFalse(failed.called);
+        reject(2);
+        reject(333);
+        setTimeout(() => {
+          assert(promise.state === 'rejected');
+          assert.isTrue(failed.calledOnce);
+          assert(failed.calledWith(2));   // calledWith被调用时传入的参数
+        },0)
+        done();
+      });
+      promise.then(null,failed)
     })
     
 });
