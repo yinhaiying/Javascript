@@ -2,16 +2,23 @@
 class Promise{
   succeed = null;
   fail = null;
-  resolve = ()=>{
+  state = 'pending';
+  resolve = (result)=>{
         // then的第一个参数是在resolve执行的情况下执行
         setTimeout(() => {
-            this.succeed();
+            this.state = 'fulfilled';
+            if(typeof this.succeed === 'function'){
+                this.succeed(result);
+            }
         },0)
   }
-  reject = ()=>{
+  reject = (reason)=>{
         // then的第二个参数是在reject执行的情况下执行
         setTimeout(() => {
-            this.fail();
+            this.state = "rejected";
+            if(typeof this.fail === 'function'){
+                this.fail(reason);
+            }
         },0)
   }
   constructor(fn){
@@ -22,9 +29,13 @@ class Promise{
     // new Promise(fn)这里的fn是立即执行的,且接收两个函数作为参数
     fn(this.resolve,this.reject);
   }
-  then(succeed,fail){
-      this.succeed = succeed;
-      this.fail = fail;
+  then(succeed?,fail?){
+    if(typeof succeed === 'function'){
+       this.succeed = succeed;
+    }
+    if(typeof fail === 'function'){
+       this.fail = fail;
+    }
   }
 }
 

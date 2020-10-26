@@ -63,4 +63,43 @@ describe('Promise', () => {
       //@ts-ignore
       promise.then(success)
     })
+    it('promise.then(success,fail)中的fail会在reject被调用之后执行',(done) => {
+      const fail = sinon.fake();
+      const promise = new Promise((resolve,reject) => {
+          assert.isFalse(fail.called)
+          reject();
+          setTimeout(() => {
+            assert.isTrue(fail.called);
+            done(); // 加入done表示我执行完了，你可以去检测我的执行结果了。
+          },0)
+      })
+      // 该函数在reject之后执行;
+      //@ts-ignore
+      promise.then(null,fail)
+    });
+    it('2.2.1——then的两个参数必须是函数，如果不是函数必须被忽略',() => {
+      const promise = new Promise((resolve) => {
+        resolve()  // resolve执行后then中的第一个参数会立即执行
+      });
+      promise.then(false,null);
+      assert(1===1)
+    });
+    it('2.2.2——then的第一个参数是一个函数,它必须在fulfilled被调用，然后把promise的值作为它的第一个参数',(done) => {
+      const succeed = sinon.fake();
+      const promise = new Promise(resolve => {
+        // assert(promise.state === 'pending');
+        console.log(".....",promise)
+        assert.isFalse(succeed.called);
+        resolve(2);
+        setTimeout(() => {
+          assert(promise.state === 'fulfilled');
+          assert.isTrue(succeed.called);
+          assert(succeed.calledWith(2));   // calledWith被调用时传入的参数
+        },0)
+        done();
+      });
+      promise.then(succeed)
+
+    })
+    
 });
