@@ -120,6 +120,43 @@ describe('Promise', () => {
         done();
       });
       promise.then(null,failed)
+    });
+    it("2.2.4——在我们的代码执行完毕之前，不得调用then后面的两个函数",(done) => {
+      const succeed = sinon.fake();
+      const promise = new Promise((resolve) => {
+        resolve();
+      });
+      promise.then(succeed);
+      console.log('在这里没有执行完毕之前，不得调用then中的succeed方法');
+      assert.isFalse(succeed.called);
+      setTimeout(() => {
+        assert.isTrue(succeed.called);
+        done();
+      },0)
+    })
+    it("2.2.4——在我们的代码执行完毕之前，不得调用then后面的两个函数",(done) => {
+      const failed = sinon.fake();
+      const promise = new Promise((resolve,reject) => {
+        reject();
+      });
+      promise.then(null,failed);
+      console.log('在这里没有执行完毕之前，不得调用then中的failed方法');
+      assert.isFalse(failed.called);
+      setTimeout(() => {
+        assert.isTrue(failed.called);
+        done();
+      },0)
+    });
+    it('2.2.5——onFulfilled和onRejected必须作为函数调用（即没有this值）',(done) => {
+      const promise = new Promise(resolve => {
+        resolve();
+      });
+      promise.then(function(){
+        "use strict";
+        console.log("................",typeof this)
+        assert(this===undefined);
+        done();
+      })
     })
     
 });
