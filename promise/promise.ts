@@ -49,6 +49,7 @@ class Promise{
        handle[1] = fail;
     }
     this.callbacks.push(handle);
+    return new Promise(() => {})
   }
 }
 
