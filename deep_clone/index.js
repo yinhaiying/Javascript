@@ -12,8 +12,9 @@ js:7中数据类型：
 */
 
 
-let map = new Map();
-function deepClone(source){
+
+function deepClone(source,map = new Map()){
+    console.log("map:",map)
     if (!(source instanceof Object)){
       return source;
     }
@@ -41,11 +42,12 @@ function deepClone(source){
     for (let key in source) {
       // 只遍历本身的属性
       if(source.hasOwnProperty(key)){
-        dist[key] = deepClone(source[key]);
+        dist[key] = deepClone(source[key],map);
       }
     }
     return dist;
 }
+
 // let obj1 = {
 //   name:"hello",
 //   child:{
@@ -129,42 +131,64 @@ function deepClone(source){
 
 
     // 复杂对象测试：
-              const a = {
-                a1: NaN,
-                a2: Infinity,
-                a3: "",
-                a4: false,
-                n: null,
-                u: undefined,
-                sym: Symbol(),
-                obj: {
-                  a1: NaN,
-                  a2: Infinity,
-                  a3: "",
-                  a4: false,
-                  n: null,
-                  u: undefined,
-                  sym: Symbol(),
-                },
-                array: [
-                  {
-                    a1: NaN,
-                    a2: Infinity,
-                    a3: "",
-                    a4: false,
-                    n: null,
-                    u: undefined,
-                    sym: Symbol(),
-                  },
-                  123,
-                ],
-                fn: function () {
-                  return "fn";
-                },
-                date: new Date(),
-                re: /hi\d/gi,
-              };
+    // const a = {
+    //   a1: NaN,
+    //   a2: Infinity,
+    //   a3: "",
+    //   a4: false,
+    //   n: null,
+    //   u: undefined,
+    //   sym: Symbol(),
+    //   obj: {
+    //     a1: NaN,
+    //     a2: Infinity,
+    //     a3: "",
+    //     a4: false,
+    //     n: null,
+    //     u: undefined,
+    //     sym: Symbol(),
+    //   },
+    //   array: [
+    //     {
+    //       a1: NaN,
+    //       a2: Infinity,
+    //       a3: "",
+    //       a4: false,
+    //       n: null,
+    //       u: undefined,
+    //       sym: Symbol(),
+    //     },
+    //     123,
+    //   ],
+    //   fn: function () {
+    //     return "fn";
+    //   },
+    //   date: new Date(),
+    //   re: /hi\d/gi,
+    // };
 
-              let a2 = deepClone(a);
-              console.log(a2);
+    // let a2 = deepClone(a);
+    // console.log(a2);
+
+  // cache问题
+  // let a = {
+  //   name: "hello",
+  // };
+  // let a1 = deepClone2(a);
+  // console.log(map); //{ name: 'hello' } => { name: 'hello' }
+  // let b = {
+  //   age: 24,
+  // };
+  // let b1 = deepClone2(b);
+  // console.log(map);
+  // 修改deepClone函数
+  let a = {
+    name: "hello",
+  };
+  let a1 = deepClone(a);   //  Map { { name: 'hello' } => {} }
+  let b = {
+    age: 24,
+  };
+  let b1 = deepClone(b);   //  Map { { name: 'hello' } => {} }
+
 module.exports = deepClone;
