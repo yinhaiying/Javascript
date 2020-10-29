@@ -119,7 +119,62 @@ describe('deep_clone',() => {
             assert.isFalse('name' in a2);
             assert(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
             assert(a.xxx !== a2.xxx);
+        });
+        it("测试一个超级复杂的对象",() => {
+          const a = {
+            i: Infinity,
+            s: "",
+            bool: false,
+            n: null,
+            u: undefined,
+            sym: Symbol(),
+            obj: {
+              i: Infinity,
+              s: "",
+              bool: false,
+              n: null,
+              u: undefined,
+              sym: Symbol(),
+            },
+            array: [
+              {
+                nan: NaN,
+                i: Infinity,
+                s: "",
+                bool: false,
+                n: null,
+                u: undefined,
+                sym: Symbol(),
+              },
+              123,
+            ],
+            fn: function () {
+              return "fn";
+            },
+            date: new Date(),
+            re: /hi\d/gi,
+          };
+          let a2 = deepClone(a);
+          assert(a2 !== a);
+          assert(a2.i === a.i);
+          assert(a2.s === a.s);
+          assert(a2.bool === a.bool);
+          assert(a2.n === a.n);
+          assert(a2.u === a.u);
+          assert(a2.sym === a.sym);
+          assert(a2.obj !== a.obj);
+          assert(a2.array !== a.array);
+          assert(a2.array[0] !== a.array[0]);
+          assert(a2.array[0].i === a.array[0].i);
+          assert(a2.array[0].s === a.array[0].s);
+          assert(a2.array[0].bool === a.array[0].bool);
+          assert(a2.array[0].n === a.array[0].n);
+          assert(a2.array[0].u === a.array[0].u);
+          assert(a2.array[0].sym === a.array[0].sym);
+          assert(a2.array[1] === a.array[1]);
+          assert(a2.fn !== a.fn);
+          assert(a2.date !== a.date);
+          assert(a2.re !== a.re);
         })
-        
     })
 })

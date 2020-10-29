@@ -118,12 +118,53 @@ function deepClone(source){
     // console.log(a.xxx !== a2.xxx);
 
     // 克隆时间
-    const a = new Date();
-    a.xxx = { yyy: { zzz: 1 } };
-    const a2 = deepClone(a);
-    console.log("a2:",a2);
-    console.log(a !== a2);
-    console.log(a.getTime() === a2.getTime());
-    console.log(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
-    console.log(a.xxx !== a2.xxx);
+    // const a = new Date();
+    // a.xxx = { yyy: { zzz: 1 } };
+    // const a2 = deepClone(a);
+    // console.log("a2:",a2);
+    // console.log(a !== a2);
+    // console.log(a.getTime() === a2.getTime());
+    // console.log(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
+    // console.log(a.xxx !== a2.xxx);
+
+
+    // 复杂对象测试：
+              const a = {
+                a1: NaN,
+                a2: Infinity,
+                a3: "",
+                a4: false,
+                n: null,
+                u: undefined,
+                sym: Symbol(),
+                obj: {
+                  a1: NaN,
+                  a2: Infinity,
+                  a3: "",
+                  a4: false,
+                  n: null,
+                  u: undefined,
+                  sym: Symbol(),
+                },
+                array: [
+                  {
+                    a1: NaN,
+                    a2: Infinity,
+                    a3: "",
+                    a4: false,
+                    n: null,
+                    u: undefined,
+                    sym: Symbol(),
+                  },
+                  123,
+                ],
+                fn: function () {
+                  return "fn";
+                },
+                date: new Date(),
+                re: /hi\d/gi,
+              };
+
+              let a2 = deepClone(a);
+              console.log(a2);
 module.exports = deepClone;
