@@ -93,6 +93,18 @@ describe('deep_clone',() => {
             const a2 = deepClone(a);
             assert(a !==a2);
             assert(a.child !== a2.child);
+        });
+        it("能够拷贝正则表达式",() => {
+            // const a = /hi\d/ig;
+            const a = new RegExp("hi\\d","ig");
+            a.xxx= {yyy:{zzz:1}};
+            const a2 = deepClone(a);
+            assert(a.source === a2.source); 
+            assert(a.flags === a2.flags); 
+            assert(a !== a2); 
+            assert(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
+            assert(a.xxx !== a2.xxx);
         })
+        
     })
 })

@@ -28,6 +28,8 @@ function deepClone(source){
       dist = function () {
         return source.call(this, ...arguments);
       };
+    }else if (source instanceof RegExp) {
+      dist = new RegExp(source.source, source.flags);
     } else {
       dist = {};
     }
@@ -86,15 +88,26 @@ function deepClone(source){
             // console.log(a.self !== a2.self);
             // console.log('a2.self:',a2.self === a2)
 
-            let a = {
-              child:null 
-            }
-            let b = a;
-            for(let i = 0;i < 20;i++){
-              b.child = {
-                child:null
-              }
-              b = b.child;
-            }
-            console.log(a);
+            // let a = {
+            //   child:null 
+            // }
+            // let b = a;
+            // for(let i = 0;i < 20;i++){
+            //   b.child = {
+            //     child:null
+            //   }
+            //   b = b.child;
+            // }
+            // console.log(a);
+
+
+    // 克隆正则
+            const a = new RegExp("hi\\d", "ig");
+            a.xxx = { yyy: { zzz: 1 } };
+            const a2 = deepClone(a);
+            console.log(a.source === a2.source);
+            console.log(a.flags === a2.flags);
+            console.log(a !== a2);
+            console.log(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
+            console.log(a.xxx !== a2.xxx);
 module.exports = deepClone;
