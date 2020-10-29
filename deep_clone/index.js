@@ -78,11 +78,23 @@ function deepClone(source){
   // console.log(a(1,2) === a2(1,2));
 
   // 环状引用
-            const a = { name: "小明" };
-            a.self = a;
-            const a2 = deepClone(a);
-            console.log(a !== a2);
-            console.log(a.name === a2.name);
-            console.log(a.self !== a2.self);
-            console.log('a2.self:',a2.self === a2)
+            // const a = { name: "小明" };
+            // a.self = a;
+            // const a2 = deepClone(a);
+            // console.log(a !== a2);
+            // console.log(a.name === a2.name);
+            // console.log(a.self !== a2.self);
+            // console.log('a2.self:',a2.self === a2)
+
+            let a = {
+              child:null 
+            }
+            let b = a;
+            for(let i = 0;i < 20;i++){
+              b.child = {
+                child:null
+              }
+              b = b.child;
+            }
+            console.log(a);
 module.exports = deepClone;

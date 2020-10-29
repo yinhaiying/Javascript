@@ -80,6 +80,19 @@ describe('deep_clone',() => {
             assert(a !== a2);
             assert(a.name === a2.name);
             assert(a.self !== a2.self);
+        });
+        xit("不会爆栈",() => {
+            const a = {child:null};
+            let b = a;
+            for(let i = 0;i < 5000;i++){
+               b.child = {
+                   child:null
+               }
+               b = b.child;
+            };
+            const a2 = deepClone(a);
+            assert(a !==a2);
+            assert(a.child !== a2.child);
         })
     })
 })
