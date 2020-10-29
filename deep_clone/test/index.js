@@ -65,11 +65,8 @@ describe('deep_clone',() => {
             }}};
             const a2 = deepClone(a);
             assert(a !== a2);
-            console.log("....", a);
-            console.log(".....:",a2)
             assert(a.xxx !== a2.xxx);
             assert(a.xxx.yyy !== a2.xxx.yyy);
-            console.log(".............",a.xxx.yyy)
             assert(a.xxx.yyy.zzz !== a2.xxx.yyy.zzz);
             assert(a(1,2) === a2(1,2));
         });
@@ -102,6 +99,15 @@ describe('deep_clone',() => {
             assert(a.source === a2.source); 
             assert(a.flags === a2.flags); 
             assert(a !== a2); 
+            assert(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
+            assert(a.xxx !== a2.xxx);
+        });
+        it('能够复制日期',() => {
+            const a = new Date();
+            a.xxx = { yyy: { zzz: 1 } };
+            const a2 = deepClone(a);
+            assert(a !== a2);
+            assert(a.getTime() === a2.getTime());
             assert(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
             assert(a.xxx !== a2.xxx);
         })

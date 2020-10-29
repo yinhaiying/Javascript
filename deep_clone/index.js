@@ -30,6 +30,9 @@ function deepClone(source){
       };
     }else if (source instanceof RegExp) {
       dist = new RegExp(source.source, source.flags);
+    }else if (source instanceof Date) {
+      console.log('source:',source)
+      dist = new Date(source);
     } else {
       dist = {};
     }
@@ -102,12 +105,22 @@ function deepClone(source){
 
 
     // 克隆正则
-            const a = new RegExp("hi\\d", "ig");
-            a.xxx = { yyy: { zzz: 1 } };
-            const a2 = deepClone(a);
-            console.log(a.source === a2.source);
-            console.log(a.flags === a2.flags);
-            console.log(a !== a2);
-            console.log(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
-            console.log(a.xxx !== a2.xxx);
+    // const a = new RegExp("hi\\d", "ig");
+    // a.xxx = { yyy: { zzz: 1 } };
+    // const a2 = deepClone(a);
+    // console.log(a.source === a2.source);
+    // console.log(a.flags === a2.flags);
+    // console.log(a !== a2);
+    // console.log(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
+    // console.log(a.xxx !== a2.xxx);
+
+    // 克隆时间
+    const a = new Date();
+    a.xxx = { yyy: { zzz: 1 } };
+    const a2 = deepClone(a);
+    console.log("a2:",a2);
+    console.log(a !== a2);
+    console.log(a.getTime() === a2.getTime());
+    console.log(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
+    console.log(a.xxx !== a2.xxx);
 module.exports = deepClone;
