@@ -39,7 +39,10 @@ function deepClone(source){
     // 每次拷贝之前，先把克隆后的对象保存起来。
     map.set(source, dist);
     for (let key in source) {
-      dist[key] = deepClone(source[key]);
+      // 只遍历本身的属性
+      if(source.hasOwnProperty(key)){
+        dist[key] = deepClone(source[key]);
+      }
     }
     return dist;
 }

@@ -110,6 +110,15 @@ describe('deep_clone',() => {
             assert(a.getTime() === a2.getTime());
             assert(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
             assert(a.xxx !== a2.xxx);
+        });
+        it('自动跳过原型属性',() => {
+            const a = Object.create({name:"aaa"});
+            a.xxx = {yyy:{zzz:123}};
+            const a2 = deepClone(a);
+            assert(a !== a2);
+            assert.isFalse('name' in a2);
+            assert(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
+            assert(a.xxx !== a2.xxx);
         })
         
     })
