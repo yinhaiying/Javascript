@@ -50,7 +50,6 @@ describe('deep_clone',() => {
         it("能够复制特殊对象——数组",() => {
             const a = [[11,12],[21,22]];
             const a2 = deepClone(a);
-            console.log('........:',a2)
             assert(a[0] !== a2[0]);
             assert(a[1] !== a2[1]);
             assert(a[0] !== a2[0]);
@@ -62,7 +61,7 @@ describe('deep_clone',() => {
               return x + y;
             };
             a.xxx = {yyy:{zzz:function(){
-                return '234';
+                return 123;
             }}};
             const a2 = deepClone(a);
             assert(a !== a2);
@@ -70,8 +69,17 @@ describe('deep_clone',() => {
             console.log(".....:",a2)
             assert(a.xxx !== a2.xxx);
             assert(a.xxx.yyy !== a2.xxx.yyy);
-            assert(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
+            console.log(".............",a.xxx.yyy)
+            assert(a.xxx.yyy.zzz !== a2.xxx.yyy.zzz);
             assert(a(1,2) === a2(1,2));
+        });
+        it("环状对象实现复制",() => {
+            const a = {name:"小明"};
+            a.self = a;
+            const a2 = deepClone(a);
+            assert(a !== a2);
+            assert(a.name === a2.name);
+            assert(a.self !== a2.self);
         })
     })
 })

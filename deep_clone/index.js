@@ -12,35 +12,31 @@ js:7中数据类型：
 */
 
 
+let map = new Map();
 function deepClone(source){
-  if(source instanceof Object){
-      // key 可能是source的属性，也可能是source原型上的属性
-      if(source instanceof Array){
-        const dist = [];
-        for (let key in source) {
-          dist[key] = deepClone(source[key]);
-        }
-        return dist;
-      }else if(source instanceof Function){
-          // 如果是一个函数
-          const dist = function(){
-            // 调用一次原来的函数，实现相同的功能
-            return source.call(this,...arguments);
-          }
-          for (let key in source) {
-            dist[key] = deepClone(source[key]);
-          }
-          return dist;
-      }else{
-        const dist = {};
-        for (let key in source) {
-          dist[key] = deepClone(source[key]);
-        }
-        return dist;
-      }
-  }else{
-    return source;
-  }
+    if (!(source instanceof Object)){
+      return source;
+    }
+    // 处理循环引用   如果source已经被拷贝过了，那么返回原来保存的拷贝后的对象。
+    if(map.get(source)){
+      return map.get(source);
+    }
+    let dist;
+    if (source instanceof Array) {
+      dist = [];
+    } else if (source instanceof Function) {
+      dist = function () {
+        return source.call(this, ...arguments);
+      };
+    } else {
+      dist = {};
+    }
+    // 每次拷贝之前，先把克隆后的对象保存起来。
+    map.set(source, dist);
+    for (let key in source) {
+      dist[key] = deepClone(source[key]);
+    }
+    return dist;
 }
 // let obj1 = {
 //   name:"hello",
@@ -68,16 +64,25 @@ function deepClone(source){
 
   // 如果是一个函数
 
-            let a = function(x,y){
-              return x + y;
-            };
-            a.xxx = {yyy:{zzz:1}};
+  // let a = function(x,y){
+  //   return x + y;
+  // };
+  // a.xxx = {yyy:{zzz:1}};
+  // const a2 = deepClone(a);
+  // console.log(a !== a2);
+  // console.log("....1", a);
+  // console.log(".....2:",a2)
+  // console.log(a.xxx !== a2.xxx);
+  // console.log(a.xxx.yyy !== a2.xxx.yyy);
+  // console.log(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
+  // console.log(a(1,2) === a2(1,2));
+
+  // 环状引用
+            const a = { name: "小明" };
+            a.self = a;
             const a2 = deepClone(a);
             console.log(a !== a2);
-            console.log("....1", a);
-            console.log(".....2:",a2)
-            console.log(a.xxx !== a2.xxx);
-            console.log(a.xxx.yyy !== a2.xxx.yyy);
-            console.log(a.xxx.yyy.zzz === a2.xxx.yyy.zzz);
-            console.log(a(1,2) === a2(1,2));
+            console.log(a.name === a2.name);
+            console.log(a.self !== a2.self);
+            console.log('a2.self:',a2.self === a2)
 module.exports = deepClone;
