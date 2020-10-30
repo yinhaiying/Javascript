@@ -1,62 +1,97 @@
-/* 
-JSON的序列化和反序列化
-1. 对象中不能有函数，否则无法序列化
-
-*/
-// let obj1 = {
-//     a:1,
-//     b:[1,2,3],
-//     c:{
-//         c1:"111",
-//         c2:"222"
-//     }
-// }
-// let obj2 = JSON.parse(JSON.stringify(obj1));
-// obj1.a = 2;
-// console.log(obj2.a);   // 1 
 
 
-// 一、不支持函数
-let obj1 = {
-    a:1,
-    b:[1,2,3],
-    c:{
-        c1:"111",
-        c2:"222"
-    },
-    f:function(){
-        console.log('函数')
-    }
+function deepClone(target,cache = new Map()){
+  if(cache.get(target)){
+      return cache.get(target)
+  }
+  if(target instanceof Object){
+      let dist ;
+      if(target instanceof Array){
+        // 拷贝数组
+        dist = [];
+      }else if(target instanceof Function){
+        // 拷贝函数
+        dist = function () {
+          return target.call(this, ...arguments);
+        };
+      }else if(target instanceof RegExp){
+        // 拷贝正则表达式
+       dist = new RegExp(target.source,target.flags);
+      }else if(target instanceof Date){
+          dist = new Date(target);
+      }else{
+        // 拷贝普通对象
+        dist = {};
+      }
+      // 将属性和拷贝后的值作为一个map
+      cache.set(target, dist);
+      for(let key in target){
+          // 过滤掉原型身上的属性
+        if (target.hasOwnProperty(key)) {
+            dist[key] = deepClone(target[key], cache);
+        }
+      }
+      return dist;
+  }else{
+      return target;
+  }
 }
-let obj2 = JSON.parse(JSON.stringify(obj1));
-console.log(obj2);   // 函数属性直接被忽略了
 
 
-// 二、不支持JSON不支持的所有类型，比如undefined
+          const a = {
+            i: Infinity,
+            s: "",
+            bool: false,
+            n: null,
+            u: undefined,
+            sym: Symbol(),
+            obj: {
+              i: Infinity,
+              s: "",
+              bool: false,
+              n: null,
+              u: undefined,
+              sym: Symbol(),
+            },
+            array: [
+              {
+                nan: NaN,
+                i: Infinity,
+                s: "",
+                bool: false,
+                n: null,
+                u: undefined,
+                sym: Symbol(),
+              },
+              123,
+            ],
+            fn: function () {
+              return "fn";
+            },
+            date: new Date(),
+            re: /hi\d/gi,
+          };
+          let a2 = deepClone(a);
+          console.log(a2 !== a);
+          console.log(a2.i === a.i);
+          console.log(a2.s === a.s);
+          console.log(a2.bool === a.bool);
+          console.log(a2.n === a.n);
+          console.log(a2.u === a.u);
+          console.log(a2.sym === a.sym);
+          console.log(a2.obj !== a.obj);
+          console.log(a2.array !== a.array);
+          console.log(a2.array[0] !== a.array[0]);
+          console.log(a2.array[0].i === a.array[0].i);
+          console.log(a2.array[0].s === a.array[0].s);
+          console.log(a2.array[0].bool === a.array[0].bool);
+          console.log(a2.array[0].n === a.array[0].n);
+          console.log(a2.array[0].u === a.array[0].u);
+          console.log(a2.array[0].sym === a.array[0].sym);
+          console.log(a2.array[1] === a.array[1]);
+          console.log(a2.fn !== a.fn);
+          console.log(a2.date !== a.date);
+          console.log(a2.re !== a.re);
 
-let obj3 = {
-    a:undefined
-}
-let obj4 = JSON.parse(JSON.stringify(obj3));
-console.log(obj4);   // 属性值为undefined的属性直接被忽略了
-
-// 三、不支持环状的引用
-// let obj5 = {
-//     a:1,
-// }
-// obj5.b = obj5;
-// let obj6 = JSON.parse(JSON.stringify(obj5));
-// console.log(obj6);  // error: Converting circular structure to JSON
-
-
-// 总结：事实上JSON只支持 object,array,string,number,true,false,null这几种数据类型，
-// 其他的的都不支持，比如正则。JSON遇到不能处理的就直接忽略。
-// https://www.json.org/json-en.html
-
-// 四、不支持正则表达式
-let obj7 = {
-    a:1,
-    re:/\d/
-}
-let obj8 =JSON.parse(JSON.stringify(obj7));
-console.log(obj8);  // re属性值为空
+        
+module.exports = deepClone;

@@ -1,5 +1,5 @@
 
-const deepClone = require("../index");
+const deepClone = require("../index1");
 const chai = require('chai');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
@@ -41,11 +41,13 @@ describe('deep_clone',() => {
     describe('对象',() => {
         it('能够复制普通对象',() => {
             const a = { name:"hello",child:{name:"小孩"}};
-            const a2 = deepClone(a);
+            let a2 = deepClone(a);
             assert(a !== a2);
             assert(a2.name ===a.name);
             assert(a.child !== a2.child);
             assert(a.child.name === a2.child.name)
+            a2.name ="world";
+            assert(a.name === 'hello');
         });
         it("能够复制特殊对象——数组",() => {
             const a = [[11,12],[21,22]];
