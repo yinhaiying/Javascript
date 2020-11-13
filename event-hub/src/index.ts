@@ -14,6 +14,13 @@ class EventHub{
             fn && fn(data);
         })
     }
+    off(eventName,handle){
+      this.cache[eventName] = this.cache[eventName] || [];
+      let index = this.cache[eventName].indexOf(handle);
+      if(index>-1){
+          this.cache[eventName].splice(index,1);
+      }
+    }
 }
 
 export default EventHub;

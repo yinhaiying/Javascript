@@ -24,5 +24,16 @@ describe("EventHub",() => {
           assert(data === "hello,world")
         })
         eventHub.emit("xxx","hello,world");
-    })
+    });
+
+    it("xxx事件被取消后不执行",() => {
+        const eventHub = new EventHub();
+        let fn = sinon.fake();
+        eventHub.on("xxx",fn);
+        eventHub.off("xxx",fn);
+        eventHub.emit("xxx");
+        console.log(eventHub.cache)
+        assert(fn.called === false);
+    });
+
 })
