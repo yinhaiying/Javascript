@@ -18,4 +18,11 @@ describe("EventHub",() => {
         eventHub.emit("xxx");
         assert(fn.called);
     });
+    it("emit可以传递参数",() => {
+        const eventHub = new EventHub();
+        eventHub.on("xxx",function(data){
+          assert(data === "hello,world")
+        })
+        eventHub.emit("xxx","hello,world");
+    })
 })
