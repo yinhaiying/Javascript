@@ -21,6 +21,15 @@ class EventHub{
           this.cache[eventName].splice(index,1);
       }
     }
+
+    once(eventName,handle){
+        this.cache[eventName] = this.cache[eventName] || [];
+        let fn = () =>{
+            handle();
+            this.off(eventName,fn);
+        }
+        this.on(eventName,fn);
+    }
 }
 
 export default EventHub;

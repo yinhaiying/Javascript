@@ -17,6 +17,8 @@ describe("EventHub",() => {
         eventHub.on("xxx",fn);
         eventHub.emit("xxx");
         assert(fn.called);
+        eventHub.emit("xxx");
+        assert(fn.called);
     });
     it("emit可以传递参数",() => {
         const eventHub = new EventHub();
@@ -32,8 +34,16 @@ describe("EventHub",() => {
         eventHub.on("xxx",fn);
         eventHub.off("xxx",fn);
         eventHub.emit("xxx");
-        console.log(eventHub.cache)
+        // console.log(eventHub.cache)
         assert(fn.called === false);
     });
+    it("once:只执行一次的事件，执行完毕之后移除",() => {
+        const eventHub = new EventHub();
+        let fn = sinon.fake();
+        eventHub.once("xxx",fn);
+        eventHub.emit("xxx");
+        eventHub.emit("xxx");
+        assert(fn.calledOnce);
+    })
 
 })
