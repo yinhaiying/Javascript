@@ -44,6 +44,6 @@ describe("EventHub",() => {
         eventHub.emit("xxx");
         eventHub.emit("xxx");
         assert(fn.calledOnce);
-    })
+    });
 
 })
