@@ -36,3 +36,15 @@ p1.then(() => {
 ```
 
 我们可以看到上面的代码是，先输出 1，然后输出 2。说明 resolve()通知 then 的第一个参数执行是异步的，如果是同步的，那么会先执行 then 中的方法，输出 2，然后再执行输出 1。
+
+## Promise 实例状态和值的分析
+
+第一种情况：new Promsie 出来的实例
+
+- 如果 executor 函数执行无报错，那么 resolve/reject 的执行，控制其状态[[PromiseState]]和[[PromiseResult]]
+- 如果 executor 函数报错，那么其状态为：[[PromiseState]] = rejected，[[PromiseResult]=报错信息
+
+第二种情况：.then 返回的实例
+
+- then 注入的方法，不论哪个方法执行，只要执行的方法无报错，返回的实例状态就是 fulfilled，也就是[[PromiseState]] = fulfilled，只要执行报错，返回的实例状态就是 rejected，也就是[[PromiseState]] = rejected。
+- 如果方法执行，又返回了新的 promise 实例，则此实例最后的成功和失败，直接决定了.then 返回实例的成功和失败。

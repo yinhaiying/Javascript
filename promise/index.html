@@ -12,9 +12,10 @@
       resolve(100)
       console.log("1")
     });
-    p1.then(() => {
+    let p2 = p1.then(() => {
       console.log("2")
-    })
+    });
+    console.log(p2)
   </script>
 
 </body>
