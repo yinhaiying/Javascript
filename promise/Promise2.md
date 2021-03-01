@@ -58,3 +58,38 @@ then: function (onfulfilled, onrejected) {
     return promsie;
 }
 ```
+
+### 处理基于then返回的promise的状态
+```js
+    function resolvePromise(promise,x,resolve,reject){
+        // 如果onfulfilled或者onrejected返回的值和创建的promise新实例是同一个,那么会陷入死循环，需要避免
+      if(x === promise){
+          throw new Error("chaining cycle detected for promise #<Promise>");
+      }
+      // 判断返回值
+      if(x !== null && typeof x === "object" || typeof x === "function"){
+          // 这里表示是一个promise
+          console.log("x:",x.then)
+        try {
+          var then = x.then;
+          if(typeof then === "function"){
+            // 说明返回结果是一个新的promise实例
+            x.then(function (y) {
+                resolve(x);
+            }, function (r) {
+                reject(r);
+            }); // this就指向x；
+          }else{
+            resolve(x);
+          }
+        } catch (error) {
+          reject(error);
+        }
+      }else{
+          // 基本类型就直接成功了。
+          resolve(x);
+      }
+
+    }
+
+```
