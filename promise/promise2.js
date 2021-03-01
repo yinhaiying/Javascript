@@ -15,16 +15,19 @@
 
         var run = function run(state, result) {
             if (state === "pending") return;
+            // 立即更改状态
             self.PromiseState = state;
             self.PromsieResult = result;
             var arr = state === 'fulfilled' ? self.onFullfilledCallbacks : self.onRejectedCallbacks;
-            // 通知then保存的方法执行；
-            for ( var i = 0; i < arr.length; i++) {
-                var itemFunc = arr[i];
-                if (typeof itemFunc === "function") {
-                    itemFunc(self.PromsieResult);
+            // 通知then保存的方法执行；但是实际上不是立即就执行这些方法（异步效果）。
+            setTimeout(function(){
+                for (var i = 0; i < arr.length; i++) {
+                    var itemFunc = arr[i];
+                    if (typeof itemFunc === "function") {
+                        itemFunc(self.PromsieResult);
+                    }
                 }
-            }
+            })
         }
 
         // 执行 resolve和reject就修改状态和结果
@@ -76,8 +79,9 @@
 
 let p1 = new Promise((resolve, reject) => {
     setTimeout(() => {
-        // resolve("OK")；
-        reject("NO")
+        resolve("OK");
+        console.log("2")
+        // reject("NO")
     },1000)
 });
 
