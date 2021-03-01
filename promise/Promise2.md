@@ -93,3 +93,54 @@ then: function (onfulfilled, onrejected) {
     }
 
 ```
+
+### Promise.all的实现
+```js
+    Promise.all = function all(arr){
+      return new Promise((resolve,reject) => {
+          var index = 0;
+          var results = [];
+          for(var i = 0;i < arr.length;i++){
+              var item = arr[i];
+              // 应该按照是否为函数或者对象，以及是否有then，then是否是函数来判断是否是Promise的实例
+              if( !(item instanceof Promise)) {
+                  index++;
+                  results[i] = item;
+                  continue
+              };
+              (function(i){
+                item.then(function (result) {
+                    index++;
+                    results[i] = result;
+                    if (index === arr.length) {
+                        resolve(results);
+                    }
+                }).catch((reason) => {
+                    // 只要有一个失败，整体就失败
+                    reject(reason);
+                })
+              })(i)
+          }
+      })
+    }
+
+```
+
+### Promise.race的实现
+```js
+    Promise.race = function race(arr){
+      return new Promise((resolve,reject) => {
+          for(var i = 0;i < arr.length;i++){
+            var item = arr[i];
+            (function (i) {
+                item.then(function (result) {
+                    resolve(result);
+                }).catch((reason) => {
+                    reject(reason);
+                })
+            })(i)
+          }
+      })
+    }
+
+```
