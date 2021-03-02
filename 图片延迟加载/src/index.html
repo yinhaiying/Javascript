@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片的延迟加载</title>
+    <style>
+        html,body{
+            height:1500px;
+        }
+        .lazyImageBox{
+            position:absolute;
+            left:50%;
+            top:900px;
+            transform: translateX(-50%);
+            width:400px;
+            height:300px;
+            background: url("../imgs/loading.gif") no-repeat center center #eee;
+        }
+        .lazyImageBox img{
+            width:100%;
+            height:100%;
+            opacity: 0;
+            transition:opacity .3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="lazyImageBox">
+        <img src="" alt="" lazy-image = "../imgs/1.png">
+    </div>
+    <script src = "./index2.js"></script>
+</body>
+</html>
