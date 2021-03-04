@@ -149,3 +149,38 @@ console.log(Object.keys(obj))  // ["0","name","age"]
 console.log(Object.getOwnPropertySymbols(obj)); // [Symbol(aa)]
 let keys = [...Object.keys(obj),...Object.getOwnPropertySymbols(obj)]
 ```
+
+## 原型prototype和原型链__proto__
+
+### 函数数据类型和对象数据类型
+1. 函数数据类型：
+* 普通函数
+* 箭头函数
+* 生成器函数
+* 构造函数/类
+
+对象数据类型:
+* 普通对象/数组对象/正则对象/日期对象...
+* 实例也是对象数据类型(排除7种原始值类型)
+* prototype原型/__proto__原型链也是对象
+
+2. 大部分函数(重点是构造函数)都内置一个prototype(原型或者说显示学会原型)的属性，属性值是一个对象，对象中存储属性和方法是供当前类所属实例调用的公共属性和方法。
+ * 箭头函数是没有prototype的
+ * 原型对象上有一个内置的属性constructor（构造器），属性值是当前函数本身。
+
+3. 每一个对象都内置一个__proto__(隐式原型)的属性，属性值是当前实例所属的原型prototype对象。
+ * Object.prototype这个对象的__proto的值是null。
+  ![原型和原型链](https://ftp.bmp.ovh/imgs/2021/03/c3024fe823d7e647.jpg)
+
+  如上图所示：
+
+  1. 每一个数组都是Array类的实例，所以每一个数组的__proto__一定执向Array.prototype。
+  2. 每一个对象都是`Object`类的实例，所以`Array.prototype`对象中的`__proto__`属性指向Object。(ps:如果你不知道这个对象是哪个类实例化的，那么它的__proto__基本上就是指向`Object.ptototype`)。
+
+  数组的实例调用方法，比如arr.push：
+  1. 首先查找当前实例对象的私有属性，私有属性中有，就从私有属性中获取。如果私有中没有，就基于`__proto__`找其所属类原型上的公共属性和方法。
+  2. 如果还找不到，就基于其原型对象上的__proto__继续往下查找，直到找到`Object.prototype`为止。
+  **这就是原型链的查找机制。**
+  arr.push <=> arr.__proto__.push <=>Array.prototype.push
+  找到的方法都是相同的，区别是执行时的this不同。
+  注意：`__proto__`在IE浏览器中无效。
