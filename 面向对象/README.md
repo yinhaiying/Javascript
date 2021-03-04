@@ -184,3 +184,41 @@ let keys = [...Object.keys(obj),...Object.getOwnPropertySymbols(obj)]
   arr.push <=> arr.__proto__.push <=>Array.prototype.push
   找到的方法都是相同的，区别是执行时的this不同。
   注意：`__proto__`在IE浏览器中无效。
+
+
+  ## 重写内置new
+  我们知道`new`操作符都经历了哪些步骤，然后就可以照着这个步骤来实现。
+  1. 创建一个实例对象，让__proto__指向类的原型
+  2. 会把构造函数当作普通函数执行,私有上下文，作用域链，初始化this,将this指向创建的对象
+  3. 观察函数的返回值，如果没有返回值或者返回基本数据类型的值，返回对象。如果返回的是引用类型的值，那么返回引用类型这个值
+  ```js
+function _new(Ctor,...params){
+    // 1. 创建一个实例对象，让__proto__指向类的原型
+    let obj = {};
+    obj.__proto__ = Ctor.prototype;
+    // 2. 会把构造函数当作普通函数执行  私有上下文，作用域链，初始化this，形参赋值
+    let result = Ctor.call(obj, ...params);
+    // 3.观察函数的返回值，如果没有返回值或者返回基本数据类型的值，返回对象。如果返回的是引用类型的值，那么返回引用类型这个值
+    if(/^(object|function)$/.test(typeof result)){
+       return result;
+    }
+    return obj;
+}
+```
+上面的方法虽然实现了new的功能，但是在IE下存在兼容性问题，因为`__proto__`在IE下无法使用，因此我们需要做下兼容处理。
+**Object.create**的使用：
+![Object.create](https://ftp.bmp.ovh/imgs/2021/03/6d41acfa37b6e2a0.jpg)
+如上图所示：`Object.create(obj)`是用于：创建一个空对象，同时将它的参数`obj`作为对象的__proto__属性的值。因此，可以改造上面的方法：
+```js
+function _new(Ctor,...params){
+    // 1. 创建一个实例对象，让__proto__指向类的原型
+    let obj = Object.create(Ctor.prototype);
+    // 2. 会把构造函数当作普通函数执行  私有上下文，作用域链，初始化this，形参赋值
+    let result = Ctor.call(obj, ...params);
+    // 3.观察函数的返回值，如果没有返回值或者返回基本数据类型的值，返回对象。如果返回的是引用类型的值，那么返回引用类型这个值
+    if(/^(object|function)$/.test(typeof result)){
+       return result;
+    }
+    return obj;
+}
+```
