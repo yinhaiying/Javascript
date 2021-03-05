@@ -104,3 +104,14 @@ Access-Control-Allow-Credentials:cors默认是不支持携带cookie的，想要�
 "Access-Control-Allow-Methods:cors支持的方法
 Access-Control-Allow-Headers:指定浏览器CORS请求会额外发送的头信息字段
 ```
+
+**CORS的弊端：**
+1. cors必须设置`Access-Control-Allow-Origin`这个字段，这个字段要么是要给具体的请求路径，比如`http://api.bob.com`，也就是只允许这个源进行访问，但是只能写一个(在node中只能设置一个,其他php之类好像可以设置白名单)，，要么是`*`，标识允许所有的源进行跨域，但是不支持携带`cookie`了。
+
+
+### http-proxy
+需要配合webpack和webpack-dev-server使用。
+
+### nginx实现代理
+
+### postMessage

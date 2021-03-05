@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>a页面</title>
+</head>
+<body>
+    <iframe src="http://127.0.0.1:1002/message/b.html" id = "iframe" style = "display:none"></iframe>
+    <script>
+        iframe.onload = function(){
+          // 监听B传递的信息
+          iframe.contentWindow.postMessage("hahaha","http://127.0.0.1:1002");
+        }
+       window.onmessage = function(data){
+          console.log(data);
+       }
+    </script>
+</body>
+</html>
