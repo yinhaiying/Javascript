@@ -282,3 +282,90 @@ function _new3(Ctor) {
   return obj;
 }
 ```
+
+## ES6 中 Class
+
+1. 用 Class 创建的类不能作为普通函数执行
+
+```js
+class Person {}
+let m = Person(); // 报错：class.js:6 Uncaught TypeError: Class constructor Person cannot be invoked without 'new'
+```
+
+2. ES6 中 constructor 函数用来实现私有属性的定义。
+
+```js
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+    this.id = "430521";
+  }
+}
+```
+
+上面的`this.id`是一个固定的值，不需要接收传递参数，因此，在 ES7 中可以直接写在外面。
+
+```js
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  id = "430521";
+}
+```
+
+3. 原型上的公共方法直接以一个函数的形式写在 class 中
+
+```js
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  id = "430521";
+  getName() {
+    console.log(this.name);
+  }
+  getAge() {
+    console.log(this.age);
+  }
+}
+```
+
+注意：区分原型上的公共方法和实例身上的私有方法。
+
+```js
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  id = "430521";
+  getAge() {
+    // 原型上的公共方法
+    console.log(this.age);
+  }
+  getId = function() {
+    // 实例身上的私有属性，属性值是一个函数而已。跟上面定义的id一样。
+    console.log(this.id);
+  };
+}
+```
+
+4. 把类当作普通对象设置属性和方法。也就是静态属性和方法
+
+```js
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  static sex = "男"; // 静态属性
+  static getSex = function() {
+    // 静态方法
+    console.log(this.sex);
+  };
+}
+```
