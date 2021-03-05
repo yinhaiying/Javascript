@@ -14,7 +14,4 @@ Child.prototype = new Parent();  // 原型继承，必须先设置原型，然�
 Child.prototype.getY = function(){
     return this.y;
 }
-
-
 let c = new Child();
-console.log(c)
