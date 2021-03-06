@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>b</title>
+</head>
+<body>
+    <script>
+       // B页面接收信息 监听A发送过来的信息
+       window.onmessage = function(ev){
+        //  ev.source值得是A
+         ev.source.postMessage(ev.data + "###",ev.origin);
+       }
+    </script>
+</body>
+</html>
