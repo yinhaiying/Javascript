@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iframe页面</title>
+</head>
+<body>
+    <div>iframe.html页面</div>
+    <script>
+        let count = 1;
+        let timer = setInterval(() => {
+            let msg = `发生了${count}次变化`;
+            localStorage.setItem("local-storage-method", JSON.stringify(msg));
+            count += 1;
+            if(timer > 50){
+                clearInterval(timer)
+            }
+        },500)
+    </script>
+</body>
+</html>

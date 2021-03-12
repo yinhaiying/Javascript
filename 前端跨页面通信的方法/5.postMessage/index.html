@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>postMessage</title>
+</head>
+<body>
+    <div style="width:200px; float:left; margin-right:200px;border:solid 1px #333;">
+        <div id="color">Frame Color</div>
+        <div id = "item">点击修改iframe页面的内容</div>
+    </div>
+    <div>
+        
+        <iframe id="child" src="./iframe.html"></iframe>
+    </div>
+    <script>
+        console.log("window.frames:",window.frames)
+        // window.onload = function () {
+        //     window.frames[0].postMessage('getcolor', '*');
+        // }
+        let count = 0;
+        item.addEventListener("click",() => {
+             count += 1; 
+             window.frames[0].postMessage(count, '*');
+        })
+        window.addEventListener('message', function (e) {
+                console.log("index.html页面111：",e)
+                var color = e.data;
+                document.getElementById('color').style.backgroundColor = color;
+        }, false);
+    </script>
+</body>
+</html>
