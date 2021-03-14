@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index页面</title>
+</head>
+<body>
+    <div>index.html页面</div>
+    <script>
+        window.addEventListener('storage', function (e) {
+            console.log("index页面：",e);
+            if (e.key === 'local-storage-method') {
+                const data = JSON.parse(e.newValue);
+                const text = '[receive] ' + data.msg + ' —— tab ' + data.from;
+                console.log('[Storage I] receive message:', text);
+            }
+        });
+    </script>
+</body>
+</html>

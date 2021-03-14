@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>parent.html</title>
+</head>
+<body>
+    <h3>这是parent.html页面</h3>
+    <div id="content">原来的数据</div>
+    <script>
+        window.addEventListener("message", receiveMessage,false);
+        function receiveMessage(event){
+            console.log("event:",event);
+        }
+    </script>
+</body>
+</html>

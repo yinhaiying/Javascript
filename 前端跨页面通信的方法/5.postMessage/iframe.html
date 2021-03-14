@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iframe.html</title>
+</head>
+<body>
+    <p id = "content">这是iframe页面</p>
+    <div id = "container" style = "background:red" >点击修改颜色</div>
+    <script>
+        window.addEventListener('message', function (e) {
+            if (e.source != window.parent) return;
+            content.innerText  = `计时器：${e.data}`
+        }, false);
+
+            container.addEventListener("click",(ev) => {
+                const bgColors = ["red","green","blur","pink","DarkMagenta","DarkOrchid","MidnightBlue","DodgerBlue"];
+                let index = Math.floor(Math.random()*8);
+                console.log("index:",index)
+                container.style.backgroundColor = bgColors[index];
+                window.parent.postMessage(bgColors[index], '*');
+            })
+    </script>
+</body>
+</html>

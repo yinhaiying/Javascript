@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index页面</title>
+</head>
+<body>
+    这是index页面
+    <script>
+        setTimeout(() => {
+            var popup = window.open("parent.html");
+            popup.postMessage("hahahhhhhh","*");
+        },1000)
+
+        function receiveMessage(event) {
+            console.log(event);
+        }
+        window.addEventListener("message", receiveMessage, false);
+        
+    </script>
+</body>
+</html>

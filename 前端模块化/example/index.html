@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>前端模块化</title>
 </head>
 <body>
-    <script src = "./class.js"></script>
-    <script src = "./5.组合式继承_寄生组合继承.js"></script>
+    <script type = "module">
+    import { name, age } from "./test.js";
+
+        console.log("name:", name);
+        console.log("age:", age);
+    </script>
 </body>
 </html>
