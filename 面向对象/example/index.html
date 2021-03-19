@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script >
+        Function.prototype.a = () => {
+            alert(1);
+        }
+
+        Function.prototype.b = () => {
+            alert(2);
+        }
+
+        function A() { }
+        const a = new A();
+        console.log(a)
+
+        a.a();  // 报错  a上面是没有a属性的
+        a.b(); // 报错  a上面是没有a属性的
+    </script>
+</body>
+</html>
