@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>call的实现</title>
+</head>
+<body>
+    <script>
+            let obj = {
+                name: "hello",
+                age: 24,
+            }
+
+            function fn(height, weight) {
+                let result = "姓名:" + this.name + "年龄:" + this.age + "身高:" + height + "体重:" + weight;
+                return result;
+            }
+            Function.prototype.call = function call(context, ...rest) {
+                context == null ? window : context;
+                if(!/^(object|function)$/.test(typeof context)){
+                  context = Object(context); // 转化成引用数据类型
+                }
+                let key = Symbol("key");  // 使用key来确保属性的唯一性
+                context[key] = this; // this -> fn 当前要执行的函数
+                let result = context[key](...rest); // context -> obj  rest-> 传递的其他参数
+                delete context[key]; // 删除给obj新增的属性
+                return result;
+            }
+            console.log(fn.call(obj)); // obj.fn(x,y)
+    </script>
+    
+</body>
+</html>
