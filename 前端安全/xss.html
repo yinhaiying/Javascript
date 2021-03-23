@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xss</title>
+</head>
+<body>
+    <h1 id = "query-key"></h1>
+    <span>查询结果如下</span>
+    <script>
+        const reg = new RegExp("(^|&)q=([^&]*)(&|$)","i");
+        const res = window.location.search.substr(1).match(reg);
+        if(res !== null){
+            const query = decodeURIComponent(res[2]);
+            // 将query直接设置到h1标签身上
+            document.getElementById("query-key").innerHTML = query;
+        }
+    </script>
+</body>
+</html>
