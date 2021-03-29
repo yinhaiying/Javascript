@@ -107,7 +107,7 @@ console.log("toString" in f1); // true
 console.log("getTotal" in f1); // true
 ```
 
-**方法二：使用对象.hasOwnPRoperty(属性名)。只检测私有属性。**
+**方法二：使用对象.hasOwnProperty(属性名)。只检测私有属性。**
 
 ```js
 console.log(f1.hasOwnProperty("x")); // true
@@ -203,8 +203,8 @@ let keys = [...Object.keys(obj), ...Object.getOwnPropertySymbols(obj)];
 
 如上图所示：
 
-1. 每一个数组都是 Array 类的实例，所以每一个数组的**proto**一定执向 Array.prototype。
-2. 每一个对象都是`Object`类的实例，所以`Array.prototype`对象中的`__proto__`属性指向 Object。(ps:如果你不知道这个对象是哪个类实例化的，那么它的**proto**基本上就是指向`Object.ptototype`)。
+1. 每一个数组都是 Array 类的实例，所以每一个数组的`__proto__`一定指向 Array.prototype。
+2. 每一个对象都是`Object`类的实例，所以`Array.prototype`对象中的`__proto__`属性指向 Object。(ps:如果你不知道这个对象是哪个类实例化的，那么它的`__proto__`基本上就是指向`Object.prototype`)。
 
 数组的实例调用方法，比如 arr.push：
 
@@ -219,7 +219,7 @@ let keys = [...Object.keys(obj), ...Object.getOwnPropertySymbols(obj)];
 
 我们知道`new`操作符都经历了哪些步骤，然后就可以照着这个步骤来实现。
 
-1. 创建一个实例对象，让**proto**指向类的原型
+1. 创建一个实例对象，让`__proto__`指向类的原型
 2. 会把构造函数当作普通函数执行,私有上下文，作用域链，初始化 this,将 this 指向创建的对象
 3. 观察函数的返回值，如果没有返回值或者返回基本数据类型的值，返回对象。如果返回的是引用类型的值，那么返回引用类型这个值
 
@@ -241,7 +241,7 @@ function _new(Ctor, ...params) {
 上面的方法虽然实现了 new 的功能，但是在 IE 下存在兼容性问题，因为`__proto__`在 IE 下无法使用，因此我们需要做下兼容处理。
 **Object.create**的使用：
 ![Object.create](https://ftp.bmp.ovh/imgs/2021/03/6d41acfa37b6e2a0.jpg)
-如上图所示：`Object.create(obj)`是用于：创建一个空对象，同时将它的参数`obj`作为对象的**proto**属性的值。因此，可以改造上面的方法：
+如上图所示：`Object.create(obj)`是用于：创建一个空对象，同时将它的参数`obj`作为对象的`__proto__`属性的值。因此，可以改造上面的方法：
 
 ```js
 function _new(Ctor, ...params) {

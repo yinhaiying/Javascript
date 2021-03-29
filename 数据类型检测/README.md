@@ -32,7 +32,7 @@ console.log(b instanceof String); // false
 ```
 **instanceof底层的处理机制：**
 基于 "实例 instanceof 类"检测的时候，浏览器底层是这样处理的：类[Symbol.hasInstance]。
-这个属性是位于Function的原型上，Function.prototype[Symbol.hasInstance] = function [Symbol.hasInstance](){...}。所有的类都是Function的实例，因此都会找到这个属性。
+这个属性是位于Function的原型上，Function.prototype[Symbol.hasInstance] = function [Symbol.hasInstance](){...}。所有的类都是Function的实例，因此都会找到这个属性，这个属性是一个方法。
 ```js
 var arr = [1,2,3];
 console.log(arr instanceof Array);  
